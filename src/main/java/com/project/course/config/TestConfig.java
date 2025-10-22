@@ -2,7 +2,9 @@ package com.project.course.config;
 
 import com.project.course.entities.Order;
 import com.project.course.entities.User;
+import com.project.course.entities.Category;
 import com.project.course.entities.enums.OrderStatus;
+import com.project.course.repository.CategoryRepository;
 import com.project.course.repository.OrderRepository;
 import com.project.course.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +23,27 @@ public class TestConfig implements CommandLineRunner {
     private UserRepository userRepository;
 
     @Autowired
-    private OrderRepository orderRepository;
+    private CategoryRepository categoryRepository;
 
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Override
     public void run(String... args) throws Exception {
+
+        Category cat1 = new Category(null, "Electronics");
+        Category cat2 = new Category(null, "Books");
+        Category cat3 = new Category(null, "Computers");
+
+        categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
+
         User u1 = new User("Yasmin", "yasmin@gmail.com", "988888888", "123456");
         User u2 = new User("Isaac", "isaac@gmail.com", "977777777", "123456");
 
         Order o1 = new Order(Instant.parse("2025-06-20T19:53:07Z"), OrderStatus.DELIVERED, u1);
         Order o2 = new Order(Instant.parse("2025-07-21T03:42:10Z"), OrderStatus.PAID, u2);
         Order o3 = new Order(Instant.parse("2025-07-22T15:21:22Z"), OrderStatus.WAITING_PAYMENT, u1);
+
 
         userRepository.saveAll(Arrays.asList(u1, u2));
         orderRepository.saveAll(Arrays.asList(o1, o2, o3));
